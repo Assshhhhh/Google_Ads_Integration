@@ -136,6 +136,51 @@ class MainActivity : AppCompatActivity() {
                     Toast.makeText(this, "User earned the reward", Toast.LENGTH_SHORT).show()
 
                 })
+
+                rewardedInterstitialAd?.fullScreenContentCallback =
+                    object : FullScreenContentCallback() {
+                        override fun onAdClicked() {
+                            // Called when a click is recorded for an ad.
+                            Toast.makeText(
+                                applicationContext,
+                                "Ad was clicked.",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
+
+                        override fun onAdDismissedFullScreenContent() {
+                            // Called when ad is dismissed.
+                            // Set the ad reference to null so you don't show the ad a second time.
+                            rewardedInterstitialAd = null
+                            startActivity(
+                                Intent(
+                                    applicationContext,
+                                    ShowAdActivity::class.java
+                                )
+                            )
+                            loadInterstitialAd()
+                        }
+
+                        override fun onAdFailedToShowFullScreenContent(adError: AdError) {
+                            // Called when ad fails to show.
+                            rewardedInterstitialAd = null
+                            startActivity(
+                                Intent(
+                                    applicationContext,
+                                    ShowAdActivity::class.java
+                                )
+                            )
+                        }
+
+                        override fun onAdImpression() {
+                            // Called when an impression is recorded for an ad.
+                        }
+
+                        override fun onAdShowedFullScreenContent() {
+                            // Called when ad is shown.
+                        }
+                    }
+
             } ?: run {
                 Toast.makeText(this, "The rewarded ad wasn't ready", Toast.LENGTH_SHORT).show()
                 val intent = Intent(this, ShowAdActivity::class.java)
@@ -166,10 +211,14 @@ class MainActivity : AppCompatActivity() {
             object : RewardedAdLoadCallback() {
                 override fun onAdFailedToLoad(adError: LoadAdError) {
                     rewardedAd = null
+                    Toast.makeText(applicationContext, "Rewarded Ad not loaded!", Toast.LENGTH_SHORT).show()
+
                 }
 
                 override fun onAdLoaded(ad: RewardedAd) {
                     rewardedAd = ad
+                    Toast.makeText(applicationContext, "Rewarded Ad loaded!", Toast.LENGTH_SHORT).show()
+
                 }
             })
     }
@@ -179,53 +228,13 @@ class MainActivity : AppCompatActivity() {
             AdRequest.Builder().build(), object : RewardedInterstitialAdLoadCallback() {
                 override fun onAdLoaded(ad: RewardedInterstitialAd) {
                     rewardedInterstitialAd = ad
-                    rewardedInterstitialAd?.fullScreenContentCallback =
-                        object : FullScreenContentCallback() {
-                            override fun onAdClicked() {
-                                // Called when a click is recorded for an ad.
-                                Toast.makeText(
-                                    applicationContext,
-                                    "Ad was clicked.",
-                                    Toast.LENGTH_SHORT
-                                ).show()
-                            }
+                    Toast.makeText(applicationContext, "Rewarded Interstitial Ad loaded!", Toast.LENGTH_SHORT).show()
 
-                            override fun onAdDismissedFullScreenContent() {
-                                // Called when ad is dismissed.
-                                // Set the ad reference to null so you don't show the ad a second time.
-                                rewardedInterstitialAd = null
-                                startActivity(
-                                    Intent(
-                                        applicationContext,
-                                        ShowAdActivity::class.java
-                                    )
-                                )
-                                loadInterstitialAd()
-                            }
-
-                            override fun onAdFailedToShowFullScreenContent(adError: AdError) {
-                                // Called when ad fails to show.
-                                rewardedInterstitialAd = null
-                                startActivity(
-                                    Intent(
-                                        applicationContext,
-                                        ShowAdActivity::class.java
-                                    )
-                                )
-                            }
-
-                            override fun onAdImpression() {
-                                // Called when an impression is recorded for an ad.
-                            }
-
-                            override fun onAdShowedFullScreenContent() {
-                                // Called when ad is shown.
-                            }
-                        }
                 }
 
                 override fun onAdFailedToLoad(adError: LoadAdError) {
                     rewardedInterstitialAd = null
+                    Toast.makeText(applicationContext, "Rewarded Interstitial Ad not loaded!", Toast.LENGTH_SHORT).show()
                 }
             })
     }
@@ -236,7 +245,7 @@ class MainActivity : AppCompatActivity() {
         InterstitialAd.load(this, AD_UNIT_ID, adRequest, object : InterstitialAdLoadCallback() {
             override fun onAdFailedToLoad(adError: LoadAdError) {
                 mInterstitialAd = null
-                Toast.makeText(applicationContext, "Ad not loaded!", Toast.LENGTH_SHORT).show()
+                Toast.makeText(applicationContext, "Interstitial Ad not loaded!", Toast.LENGTH_SHORT).show()
             }
 
             override fun onAdLoaded(interstitialAd: InterstitialAd) {
