@@ -14,18 +14,39 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_alignParentBottom="true"
+        android:layout_alignParentTop="true"
         ads:adSize="BANNER"
         ads:adUnitId="ca-app-pub-3940256099942544/6300978111">
     </com.google.android.gms.ads.AdView>
+
 
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/button_show"
-        android:text="Show Interstitial"
+        android:text="Show Interstitial Ad"
         android:layout_marginHorizontal="30dp"
         android:layout_centerVertical="true"
         />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/button_show_rewarded"
+        android:text="Show Rewarded Ad"
+        android:layout_marginHorizontal="30dp"
+        android:layout_below="@id/button_show"
+        />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/button_show_rewarded_interstitial"
+        android:text="Show Rewarded Interstitial Ad"
+        android:layout_marginHorizontal="30dp"
+        android:layout_below="@id/button_show_rewarded"
+        />
+
+
 
 </RelativeLayout>
